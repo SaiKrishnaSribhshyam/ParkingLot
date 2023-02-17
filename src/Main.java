@@ -2,10 +2,9 @@
 import Models.FeeSlab;
 import Models.ParkingLotType;
 import Models.VehicleType;
-import Strategies.FeeModelFactory;
+import Strategies.SlabFeeModelFactory;
 import Tests.OpenSpaceParkingLotTest;
 
-import java.io.File;
 import java.util.List;
 
 public class Main {
@@ -14,8 +13,8 @@ public class Main {
         OpenSpaceParkingLotTest openSpaceParkingLotTest=new OpenSpaceParkingLotTest();
         openSpaceParkingLotTest.testOpenSpaceParkingLot();
 
-        List<FeeSlab> feeSlabList= FeeModelFactory.getFeeSlabs(ParkingLotType.MallParkingLot, VehicleType.BUS);
+        List<FeeSlab> feeSlabList= SlabFeeModelFactory.getFeeSlabs(ParkingLotType.MallParkingLot, VehicleType.BUS);
     }
 }
 
-//C:\Users\Sony\IdeaProjects\ParkingLot\src\Static\Feeslabs.properties
+//C:\Users\Sony\IdeaProjects\ParkingLot\src\Static\FeeSlabs.properties

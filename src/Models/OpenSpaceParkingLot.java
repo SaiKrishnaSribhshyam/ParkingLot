@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OpenSpaceParkingLot extends ParkingLot{
-    private List<ParkingSpot> bikeParkingSpots;
-    private List<ParkingSpot> lmvParkingSpots;
-    private List<ParkingSpot> hmvParkingSpots;
+    private ParkingArea parkingArea;
     private int bikeParkingCapacity;
     private int lmvParkingCapacity;
     private int hmvParkingCapacity;
@@ -17,12 +15,7 @@ public class OpenSpaceParkingLot extends ParkingLot{
         this.bikeParkingCapacity=bikeParkingCapacity;
         this.lmvParkingCapacity=lmvParkingCapacity;
         this.hmvParkingCapacity=hmvParkingCapacity;
-        bikeParkingSpots=new ArrayList<ParkingSpot>(bikeParkingCapacity);
-        lmvParkingSpots=new ArrayList<ParkingSpot>(lmvParkingCapacity);
-        hmvParkingSpots=new ArrayList<ParkingSpot>(hmvParkingCapacity);
-        loadParkingSpots(bikeParkingSpots,VehicleType.MOTORCYCLE,bikeParkingCapacity);
-        loadParkingSpots(lmvParkingSpots,VehicleType.CAR,lmvParkingCapacity);
-        loadParkingSpots(hmvParkingSpots,VehicleType.BUS,hmvParkingCapacity);
+        parkingArea=new ParkingArea(bikeParkingCapacity,lmvParkingCapacity,hmvParkingCapacity);
     }
 
     private void loadParkingSpots(List<ParkingSpot> parkingSpotList, VehicleType vehicleType, int length) {
@@ -31,28 +24,35 @@ public class OpenSpaceParkingLot extends ParkingLot{
         }
     }
 
-    public List<ParkingSpot> getBikeParkingSpots() {
-        return bikeParkingSpots;
+    public ParkingArea getParkingArea() {
+        return parkingArea;
     }
 
-    public void setBikeParkingSpots(List<ParkingSpot> bikeParkingSpots) {
-        this.bikeParkingSpots = bikeParkingSpots;
+    public void setParkingArea(ParkingArea parkingArea) {
+        this.parkingArea = parkingArea;
     }
 
-    public List<ParkingSpot> getLmvParkingSpots() {
-        return lmvParkingSpots;
+    public int getBikeParkingCapacity() {
+        return bikeParkingCapacity;
     }
 
-    public void setLmvParkingSpots(List<ParkingSpot> lmvParkingSpots) {
-        this.lmvParkingSpots = lmvParkingSpots;
+    public void setBikeParkingCapacity(int bikeParkingCapacity) {
+        this.bikeParkingCapacity = bikeParkingCapacity;
     }
 
-    public List<ParkingSpot> getHmvParkingSpots() {
-        return hmvParkingSpots;
+    public int getLmvParkingCapacity() {
+        return lmvParkingCapacity;
     }
 
-    public void setHmvParkingSpots(List<ParkingSpot> hmvParkingSpots) {
-        this.hmvParkingSpots = hmvParkingSpots;
+    public void setLmvParkingCapacity(int lmvParkingCapacity) {
+        this.lmvParkingCapacity = lmvParkingCapacity;
     }
 
+    public int getHmvParkingCapacity() {
+        return hmvParkingCapacity;
+    }
+
+    public void setHmvParkingCapacity(int hmvParkingCapacity) {
+        this.hmvParkingCapacity = hmvParkingCapacity;
+    }
 }

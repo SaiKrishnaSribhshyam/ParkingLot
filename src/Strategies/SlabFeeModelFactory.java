@@ -5,21 +5,19 @@ import Models.ParkingLotType;
 import Models.SlabType;
 import Models.VehicleType;
 
-import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class FeeModelFactory {
+public class SlabFeeModelFactory {
 
     private static Properties props=new Properties();
 
     public static List<FeeSlab> getFeeSlabs(ParkingLotType parkingLotType, VehicleType vehicleType){
         List<FeeSlab> feeSlabList=new ArrayList<FeeSlab>();
         try {
-            FileReader fr=new FileReader(".\\src\\Static\\Feeslabs.properties");
+            FileReader fr=new FileReader(".\\src\\Static\\FeeSlabs.properties");
             props.load(fr);
             String[] slabs=props.getProperty(String.valueOf(parkingLotType)+"_"+String.valueOf(vehicleType)).split("\\|");
             for(String slab:slabs){
