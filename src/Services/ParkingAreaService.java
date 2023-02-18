@@ -20,23 +20,23 @@ public class ParkingAreaService {
         }
     }
 
-    public int getParkingStatus(ParkingArea parkingArea, VehicleType vehicleType){
-        int occupancy=0;
+    public int getCountOfVacantSpots(ParkingArea parkingArea, VehicleType vehicleType){
+        int vacancy=0;
         if(vehicleType==VehicleType.MOTORCYCLE||vehicleType==VehicleType.SCOOTER)
-            occupancy+=getCurrentOccupancy(parkingArea.getBikeParkingSpots());
+            vacancy+=getCurrentVaccancy(parkingArea.getBikeParkingSpots());
         else if(vehicleType==VehicleType.BUS||vehicleType==VehicleType.TRUCK)
-            occupancy+=getCurrentOccupancy(parkingArea.getHmvParkingSpots());
+            vacancy+=getCurrentVaccancy(parkingArea.getHmvParkingSpots());
         else if(vehicleType==VehicleType.CAR||vehicleType==VehicleType.SUV)
-            occupancy+=getCurrentOccupancy(parkingArea.getLmvParkingSpots());
+            vacancy+=getCurrentVaccancy(parkingArea.getLmvParkingSpots());
 
-        return occupancy;
+        return vacancy;
     }
 
-    public int getCurrentOccupancy(List<ParkingSpot> parkingSpotList){
+    public int getCurrentVaccancy(List<ParkingSpot> parkingSpotList){
         int count=0;
         int length=parkingSpotList.size();
         for(int i=0;i<length;i++){
-            if(parkingSpotList.get(i).getParkingSpotStatus()== ParkingSpotStatus.OCCUPIED)
+            if(parkingSpotList.get(i).getParkingSpotStatus()== ParkingSpotStatus.AVAILABLE)
                 count++;
         }
         return count;

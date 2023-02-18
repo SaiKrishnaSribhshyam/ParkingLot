@@ -15,9 +15,9 @@ public class ParkingArea {
         this.bikeParkingCapacity=bikeParkingCapacity;
         this.lmvParkingCapacity=lmvParkingCapacity;
         this.hmvParkingCapacity=hmvParkingCapacity;
-        bikeParkingSpots=new ArrayList<>();
-        lmvParkingSpots=new ArrayList<>();
-        hmvParkingSpots=new ArrayList<>();
+        bikeParkingSpots=new ArrayList<ParkingSpot>();
+        lmvParkingSpots=new ArrayList<ParkingSpot>();
+        hmvParkingSpots=new ArrayList<ParkingSpot>();
     }
 
     public List<ParkingSpot> getBikeParkingSpots() {
