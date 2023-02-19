@@ -21,7 +21,7 @@ public class SlabFeeModelFactory {
             props.load(fr);
             String[] slabs=props.getProperty(String.valueOf(parkingLotType)+"_"+String.valueOf(vehicleType)).split("\\|");
             for(String slab:slabs){
-                System.out.println(slab);
+                //System.out.println(slab);
                 String[] thisSlab=slab.split(",");
                 FeeSlab feeSlab=new FeeSlab(Integer.valueOf(thisSlab[0]),Integer.valueOf(thisSlab[1]),SlabType.valueOf(thisSlab[3]),Double.valueOf(thisSlab[2]));
                 feeSlabList.add(feeSlab);

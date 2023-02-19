@@ -1,6 +1,7 @@
 package Services;
 
 import Models.*;
+import Repo.TicketRepo;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -8,12 +9,18 @@ import java.util.Calendar;
 import java.util.List;
 
 public class AssignParkingSpotService {
-    public Ticket assignSpot(ParkingArea parkingArea,VehicleType vehicleType) {
-        ParkingSpot parkingSpot=getNextAvailableSpot(getListOfParkingSpots(parkingArea,vehicleType));
+    private TicketRepo ticketRepo;
+
+    public AssignParkingSpotService(TicketRepo ticketRepo){
+        this.ticketRepo=ticketRepo;
+    }
+    public Ticket assignSpot(ParkingArea parkingArea,Vehicle vehicle) {
+        ParkingSpot parkingSpot=getNextAvailableSpot(getListOfParkingSpots(parkingArea,vehicle.getVehicleType()));
 
         parkingSpot.setParkingSpotStatus(ParkingSpotStatus.OCCUPIED);
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
         Ticket ticket=new Ticket(parkingSpot, simpleDateFormat.format(Calendar.getInstance().getTime()));
+        ticketRepo.addTicket(vehicle,ticket);
         return ticket;
     }
 

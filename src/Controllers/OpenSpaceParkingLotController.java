@@ -15,8 +15,12 @@ public class OpenSpaceParkingLotController {
     public OpenSpaceParkingLotResponseDTO getOpenSpaceParkingLot(OpenSpaceParkingLotRequestDTO openSpaceParkingLotRequestDTO){
        OpenSpaceParkingLot openSpaceParkingLot=openSpaceParkingLotService.createOpenSpaceParkingLot(openSpaceParkingLotRequestDTO);
        OpenSpaceParkingLotResponseDTO openSpaceParkingLotResponseDTO=new OpenSpaceParkingLotResponseDTO();
-       openSpaceParkingLotResponseDTO.setOpenSpaceParkingLot(openSpaceParkingLot);
-       openSpaceParkingLotResponseDTO.setStatus("Success... Parkinglot Created!");
+       if(openSpaceParkingLot!=null) {
+           openSpaceParkingLotResponseDTO.setOpenSpaceParkingLot(openSpaceParkingLot);
+           openSpaceParkingLotResponseDTO.setStatus("Success");
+       }
+       else
+           openSpaceParkingLotResponseDTO.setStatus("Failed");
        return openSpaceParkingLotResponseDTO;
     }
 }

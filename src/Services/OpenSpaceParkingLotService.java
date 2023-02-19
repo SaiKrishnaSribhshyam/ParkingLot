@@ -15,7 +15,7 @@ public class OpenSpaceParkingLotService {
     public OpenSpaceParkingLot createOpenSpaceParkingLot(OpenSpaceParkingLotRequestDTO openSpaceParkingLotRequestDTO){
         OpenSpaceParkingLot openSpaceParkingLot=new OpenSpaceParkingLot(openSpaceParkingLotRequestDTO.getBikeParkingCapcity(),openSpaceParkingLotRequestDTO.getLMVParkingCapacity(),openSpaceParkingLotRequestDTO.getHMVParkingCapacity());
         openSpaceParkingLot.setParkingLotAddress(openSpaceParkingLotRequestDTO.getAddress());
-        openSpaceParkingLot.setParkingLotFeeModel(openSpaceParkingLotRequestDTO.getSlabFeeModelStrategy());
+        openSpaceParkingLot.setParkingLotFeeModel(openSpaceParkingLotRequestDTO.getParkingLotFeeModel());
         openSpaceParkingLot.setParkingLotType(openSpaceParkingLotRequestDTO.getParkingLotType());
         parkingAreaService.loadParkingArea(openSpaceParkingLot.getParkingArea());
         return openSpaceParkingLot;

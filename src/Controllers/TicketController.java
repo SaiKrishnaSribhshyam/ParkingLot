@@ -19,8 +19,8 @@ public class TicketController {
     public TicketResponseDTO getTicket(TicketRequestDTO ticketRequestDTO){
         VehicleType vehicleType= ticketRequestDTO.getVehicle().getVehicleType();
         ParkingArea avaialbleParkingArea=parkingLotService.getnextAvailableParkingArea(ticketRequestDTO.getParkingLot(), vehicleType);
-        Ticket ticket=assignParkingSpotService.assignSpot(avaialbleParkingArea,vehicleType);
-        TicketResponseDTO ticketResponseDTO=new TicketResponseDTO(ticket,"Ticket created");
+        Ticket ticket=assignParkingSpotService.assignSpot(avaialbleParkingArea,ticketRequestDTO.getVehicle());
+        TicketResponseDTO ticketResponseDTO=new TicketResponseDTO(ticket,"Success");
         return ticketResponseDTO;
     }
 }

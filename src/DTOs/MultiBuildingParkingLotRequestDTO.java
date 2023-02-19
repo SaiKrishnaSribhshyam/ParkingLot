@@ -1,6 +1,7 @@
 package DTOs;
 
 import Models.Address;
+import Models.ParkingLotFeeModel;
 import Models.ParkingLotType;
 import Strategies.SlabFeeModelStrategy;
 
@@ -12,15 +13,15 @@ public class MultiBuildingParkingLotRequestDTO {
     private int noOfbuildings;
     private int noOfFloorsInEachBuilding;
     private Address address;
-    private SlabFeeModelStrategy slabFeeModelStrategy;
+    private ParkingLotFeeModel parkingLotFeeModel;
 
-    public MultiBuildingParkingLotRequestDTO(int noOfbuildings, int noOfFloorsInEachBuilding,ParkingLotType parkingLotType, int bikeParkingCapcity, int LMVParkingCapacity, int HMVParkingCapacity,Address address,SlabFeeModelStrategy slabFeeModelStrategy) {
+    public MultiBuildingParkingLotRequestDTO(int noOfbuildings, int noOfFloorsInEachBuilding,ParkingLotType parkingLotType, int bikeParkingCapcity, int LMVParkingCapacity, int HMVParkingCapacity,Address address,ParkingLotFeeModel parkingLotFeeModel) {
         this.parkingLotType = parkingLotType;
         this.bikeParkingCapcity = bikeParkingCapcity;
         this.LMVParkingCapacity = LMVParkingCapacity;
         this.HMVParkingCapacity = HMVParkingCapacity;
         this.noOfbuildings =noOfbuildings;
-        this.slabFeeModelStrategy=slabFeeModelStrategy;
+        this.parkingLotFeeModel=parkingLotFeeModel;
         this.address=address;
         this.noOfFloorsInEachBuilding=noOfFloorsInEachBuilding;
     }
@@ -49,8 +50,8 @@ public class MultiBuildingParkingLotRequestDTO {
         return address;
     }
 
-    public SlabFeeModelStrategy getSlabFeeModelStrategy() {
-        return slabFeeModelStrategy;
+    public ParkingLotFeeModel getParkingLotFeeModel() {
+        return parkingLotFeeModel;
     }
 
     public int getNoOfFloorsInEachBuilding() {

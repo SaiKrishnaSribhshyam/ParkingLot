@@ -26,7 +26,7 @@ public class SlabFeeModelStrategy implements ParkingLotFeeModel {
         }
 
         long durationMillis=(exitTime.getTime()-entryTime.getTime());
-        System.out.println("duration"+durationMillis);
+        //System.out.println("duration"+durationMillis);
         int durationHours=(int)durationMillis/(60*60*1000);
         int remainingMins=(int)(durationMillis/(60*1000))%60;
         int durationdays=(int)durationHours/24;

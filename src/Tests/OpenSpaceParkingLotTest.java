@@ -1,43 +1,88 @@
 package Tests;
 
+import DTOs.*;
+import Exceptions.NoAvailalbeParkingSpotException;
 import Models.*;
 import Services.AssignParkingSpotService;
 import Services.ParkingAreaService;
 import Services.ReceiptGenerationService;
 import Strategies.SlabFeeModelStrategy;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Properties;
+
 public class OpenSpaceParkingLotTest {
     private SingletonRepo singletonRepo;
     public OpenSpaceParkingLotTest(SingletonRepo singletonRepo){
         this.singletonRepo=singletonRepo;
     }
-    public void testOpenSpaceParkingLot(){
-        //testcase1
-        ParkingLotFeeModel parkingLotFeeModel=new SlabFeeModelStrategy();
-        OpenSpaceParkingLot parkingLot=new OpenSpaceParkingLot(100,50,50);
-        singletonRepo.parkingAreaService.loadParkingArea(parkingLot.getParkingArea());
-        parkingLot.setParkingLotFeeModel(parkingLotFeeModel);
-        parkingLot.setParkingLotType(ParkingLotType.MallParkingLot);
-        Ticket ticket=singletonRepo.assignParkingSpotService.assignSpot(parkingLot.getParkingArea(), VehicleType.CAR);
-        ticket.setEntryDateTime("16-Feb-2023 19:15:00");
-        System.out.println(ticket);
-        System.out.println(singletonRepo.receiptGenerationService.generateReceipt(parkingLot,ticket));
+    public void testOpenSpaceParkingLot(String filename,int testcases) throws IOException {
+        FileReader fileReader=new FileReader(filename);
+        Properties props=new Properties();
+        props.load(fileReader);
+        for(int i=1;i<=testcases;i++){
+            String testcase="TestCase"+String.valueOf(i);
+            System.out.println(testcase);
+            String[] testcaseStrings= props.getProperty(testcase).split("\\|");
+            String[] parkingLotMetadata=testcaseStrings[0].split(",");
+            String[] parkingLotAddressArray=parkingLotMetadata[4].split(";");
+            Address parkingLotAddress=new Address(parkingLotAddressArray[0],parkingLotAddressArray[1],parkingLotAddressArray[2]);
+            ParkingLotType parkingLotType=ParkingLotType.valueOf(parkingLotMetadata[0]);
+            int bikeParkingCapacity=Integer.valueOf(parkingLotMetadata[1]);
+            int lmvParkingCapacity=Integer.valueOf(parkingLotMetadata[2]);
+            int hmvParkingCapacity=Integer.valueOf(parkingLotMetadata[3]);
+            OpenSpaceParkingLotRequestDTO openSpaceParkingLotRequestDTO=new OpenSpaceParkingLotRequestDTO(parkingLotType,bikeParkingCapacity,lmvParkingCapacity,hmvParkingCapacity,singletonRepo.parkingLotFeeModel,parkingLotAddress);
+            OpenSpaceParkingLotResponseDTO openSpaceParkingLotResponseDTO= singletonRepo.openSpaceParkingLotController.getOpenSpaceParkingLot(openSpaceParkingLotRequestDTO);
+            System.out.println(parkingLotMetadata[0]+" creation:"+openSpaceParkingLotResponseDTO.getStatus());
+            ParkingLot openSpaceParkingLot=openSpaceParkingLotResponseDTO.getOpenSpaceParkingLot();
+            int length=testcaseStrings.length;
+            for(int j=1;j<length;j++){
+                String[] parkingActionMetaData=testcaseStrings[j].split(",");
+                if(parkingActionMetaData[0].equals("PARK")){
+                    Vehicle vehicle=new Vehicle(Integer.valueOf(parkingActionMetaData[2]),VehicleType.valueOf(parkingActionMetaData[1]));
+                    System.out.println("Parking Vehicle"+vehicle);
+                    TicketRequestDTO ticketRequestDTO=new TicketRequestDTO(openSpaceParkingLot,vehicle);
+                    TicketResponseDTO ticketResponseDTO=null;
+                    try{
+                        ticketResponseDTO=singletonRepo.ticketController.getTicket(ticketRequestDTO);
+                        System.out.println(ticketResponseDTO.getTicket());
+                    }
+                    catch(NoAvailalbeParkingSpotException e){
+                        System.out.println("Space not avaialble");
+                    }
+                }
+                else if(parkingActionMetaData[0].equals("UNPARK")){
+                    Vehicle vehicle=new Vehicle(Integer.valueOf(parkingActionMetaData[2]),VehicleType.valueOf(parkingActionMetaData[1]));
+                    System.out.println("Un-Parking Vehicle"+vehicle);
+                    int days=Integer.valueOf(parkingActionMetaData[3]);
+                    int hours=Integer.valueOf(parkingActionMetaData[4]);
+                    int mins=Integer.valueOf(parkingActionMetaData[5]);
+                    //update entry time stamp as per test case
+                    updateTicketStartDateTime(vehicle,days,hours,mins);
+                    ReceiptRequestDTO receiptRequestDTO=new ReceiptRequestDTO(openSpaceParkingLot,vehicle);
+                    ReceiptResponseDTO receiptResponseDTO=singletonRepo.receiptController.getReceipt(receiptRequestDTO);
+                    System.out.println(receiptResponseDTO.getReceipt());
+                }
+                else
+                    System.out.println("invalid action");
+            }
+        }
 
-        //testcase2
-        parkingLot.setParkingLotType(ParkingLotType.StadiumParkingLot);
-        ticket=singletonRepo.assignParkingSpotService.assignSpot(parkingLot.getParkingArea(), VehicleType.SUV);
-        ticket.setEntryDateTime("16-Feb-2023 12:30:00");
-        System.out.println(ticket);
-        System.out.println(singletonRepo.receiptGenerationService.generateReceipt(parkingLot,ticket));
 
+    }
 
-        //testcase3
-        parkingLot.setParkingLotType(ParkingLotType.AirportParkingLot);
-        ticket=singletonRepo.assignParkingSpotService.assignSpot(parkingLot.getParkingArea(), VehicleType.MOTORCYCLE);
-        ticket.setEntryDateTime("15-Feb-2023 11:00:00");
-        System.out.println(ticket);
-        System.out.println(singletonRepo.receiptGenerationService.generateReceipt(parkingLot,ticket));
-
+    private void updateTicketStartDateTime(Vehicle vehicle, int days, int hours, int mins) {
+        Ticket ticket=singletonRepo.ticketRepo.getTicket(vehicle);
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+        Calendar calendar=Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR,-days);
+        calendar.add(Calendar.HOUR,-hours);
+        calendar.add(Calendar.MINUTE,-mins);
+        ticket.setEntryDateTime(simpleDateFormat.format(calendar.getTime()));
     }
 
 }

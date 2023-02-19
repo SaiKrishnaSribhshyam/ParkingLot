@@ -6,6 +6,7 @@ import Strategies.SlabFeeModelFactory;
 import Tests.OpenSpaceParkingLotTest;
 import Tests.SingletonRepo;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class Main {
@@ -13,7 +14,13 @@ public class Main {
         System.out.println("Hello world!");
         SingletonRepo singletonRepo=new SingletonRepo();
         OpenSpaceParkingLotTest openSpaceParkingLotTest=new OpenSpaceParkingLotTest(singletonRepo);
-        openSpaceParkingLotTest.testOpenSpaceParkingLot();
+        String str=new String(".\\src\\Static\\TestCase.properties");
+        try {
+            openSpaceParkingLotTest.testOpenSpaceParkingLot(str, 4);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
 
         List<FeeSlab> feeSlabList= SlabFeeModelFactory.getFeeSlabs(ParkingLotType.MallParkingLot, VehicleType.BUS);
     }
