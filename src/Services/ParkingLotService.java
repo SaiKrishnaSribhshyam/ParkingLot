@@ -27,6 +27,6 @@ public class ParkingLotService {
             }
         }
 
-        throw new NoAvailalbeParkingSpotException();
+        throw new NoAvailalbeParkingSpotException("All Parking slots are full!");
     }
 }

@@ -32,7 +32,7 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return "Ticket{" +
+        return "Ticket:{" +
                 "parkingSpot=" + parkingSpot +
                 ", entryDateTime='" + entryDateTime + '\'' +
                 '}';

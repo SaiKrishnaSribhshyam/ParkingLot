@@ -36,7 +36,7 @@ public class Receipt {
 
     @Override
     public String toString() {
-        return "Receipt{" +
+        return "Receipt:{" +
                 "entryDateTime='" + entryDateTime + '\'' +
                 ", exitDateTime='" + exitDateTime + '\'' +
                 ", feeAmount=" + feeAmount +

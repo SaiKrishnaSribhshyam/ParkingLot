@@ -20,13 +20,23 @@ public class OpenSpaceParkingLotTest {
     public OpenSpaceParkingLotTest(SingletonRepo singletonRepo){
         this.singletonRepo=singletonRepo;
     }
-    public void testOpenSpaceParkingLot(String filename,int testcases) throws IOException {
-        FileReader fileReader=new FileReader(filename);
-        Properties props=new Properties();
-        props.load(fileReader);
+    public void testOpenSpaceParkingLot(String filename,int testcases) {
+        FileReader fileReader=null;
+        Properties props=null;
+        try {
+            fileReader = new FileReader(filename);
+            props = new Properties();
+            props.load(fileReader);
+        }
+        catch(FileNotFoundException E){
+            System.out.println("File reading Exception");
+        }
+        catch(IOException e){
+            System.out.println("IO Exception");
+        }
         for(int i=1;i<=testcases;i++){
             String testcase="TestCase"+String.valueOf(i);
-            System.out.println(testcase);
+            System.out.println("-------------------"+testcase+"-------------------");
             String[] testcaseStrings= props.getProperty(testcase).split("\\|");
             String[] parkingLotMetadata=testcaseStrings[0].split(",");
             String[] parkingLotAddressArray=parkingLotMetadata[4].split(";");
@@ -44,7 +54,7 @@ public class OpenSpaceParkingLotTest {
                 String[] parkingActionMetaData=testcaseStrings[j].split(",");
                 if(parkingActionMetaData[0].equals("PARK")){
                     Vehicle vehicle=new Vehicle(Integer.valueOf(parkingActionMetaData[2]),VehicleType.valueOf(parkingActionMetaData[1]));
-                    System.out.println("Parking Vehicle"+vehicle);
+                    System.out.println("Parking "+vehicle);
                     TicketRequestDTO ticketRequestDTO=new TicketRequestDTO(openSpaceParkingLot,vehicle);
                     TicketResponseDTO ticketResponseDTO=null;
                     try{
@@ -57,7 +67,7 @@ public class OpenSpaceParkingLotTest {
                 }
                 else if(parkingActionMetaData[0].equals("UNPARK")){
                     Vehicle vehicle=new Vehicle(Integer.valueOf(parkingActionMetaData[2]),VehicleType.valueOf(parkingActionMetaData[1]));
-                    System.out.println("Un-Parking Vehicle"+vehicle);
+                    System.out.println("Un-Parking "+vehicle);
                     int days=Integer.valueOf(parkingActionMetaData[3]);
                     int hours=Integer.valueOf(parkingActionMetaData[4]);
                     int mins=Integer.valueOf(parkingActionMetaData[5]);

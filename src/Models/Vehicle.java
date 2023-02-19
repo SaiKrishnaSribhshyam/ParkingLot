@@ -42,7 +42,7 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return "Vehicle{" +
+        return "Vehicle:{" +
                 "id=" + id +
                 ", vehicleType=" + vehicleType +
                 '}';

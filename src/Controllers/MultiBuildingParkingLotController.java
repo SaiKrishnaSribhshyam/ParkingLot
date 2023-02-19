@@ -13,6 +13,7 @@ public class MultiBuildingParkingLotController {
     }
 
     public MultipBuildingParkingLotResponseDTO getMultiBuildingParkingLot(MultiBuildingParkingLotRequestDTO multiBuildingParkingLotRequestDTO){
+        //todo multi building parking lot code goes here
         return null;
     }
 }
